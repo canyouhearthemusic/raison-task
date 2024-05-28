@@ -1,0 +1,93 @@
+services:
+  nginx-backend:
+    build:
+      context: ./docker-files/nginx/backend
+      dockerfile: Dockerfile
+    
+    ports:
+      - 9090:80
+
+    volumes:
+      - ./backend:/var/www/html
+
+    depends_on:
+      - mysql
+
+  nginx-frontend:
+    build: 
+      context: ./docker-files/nginx/frontend
+      dockerfile: Dockerfile
+
+    ports:
+      - 9091:80
+
+    volumes:
+      - ./frontend:/var/www/html
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/var/www/html
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./frontend:/var/www/html
+
+    working_dir: /var/www/html
+
+    ports:
+      - 5174:5173
+    
+    entrypoint: ['npm']
+
+  composer:
+    build:
+      context: ./docker-files/composer
+      dockerfile: Dockerfile
+    
+    volumes:
+      - ./backend:/var/www/html
+
+    working_dir: /var/www/html
+
+    depends_on:
+      - backend
+
+  artisan:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/var/www/html
+
+    working_dir: /var/www/html
+
+    entrypoint: ["php", "/var/www/html/artisan"]
+    
+  mysql:
+    image: mysql:8.3.0
+
+    ports:
+      - 3307:3306
+
+    environment:
+      MYSQL_DATABASE: raison-task
+      MYSQL_USER: app
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+
+  redis:
+    image: redis:7.2.5
+
+    ports:
+      - 6380:6379
+
+    
