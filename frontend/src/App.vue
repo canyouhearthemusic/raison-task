@@ -1,6 +1,7 @@
 <script setup>
-import Button from "@/components/ui/button/Button.vue";
+import { RouterView } from "vue-router";
 </script>
 
 <template>
+    <RouterView />
 </template>
