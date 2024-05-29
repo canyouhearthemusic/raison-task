@@ -4,10 +4,12 @@ import Input from "@/components/ui/input/Input.vue";
 import Button from "@/components/ui/button/Button.vue";
 import { Pencil2Icon, TrashIcon } from "@radix-icons/vue";
 import { RouterLink } from "vue-router";
-import { reactive } from "vue";
+import { ref, watch } from "vue";
 
-const form = reactive({
-    "search": ""
+const search = ref("")
+
+watch(search, async (newValue) => {
+    // TODO: Request
 })
 </script>
 
@@ -16,21 +18,22 @@ const form = reactive({
         <div class="mx-24">
             <div class="flex justify-between items-center">
                 <div class="flex gap-x-6">
-                    <Input v-model="form.search" class="w-64" placeholder="Поиск по магазинам" />
+                    <Input v-model="search" class="w-64" placeholder="Поиск по магазинам" />
 
                     <Button class="rounded-full"> Добавить </Button>
                 </div>
-                <select name="" id="">
+                
+                <select name="currency" id="currency">
                     <option value="">All</option>
-                    <option value="">USD</option>
-                    <option value="">EUR</option>
-                    <option value="">RUB</option>
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                    <option value="rub">RUB</option>
                 </select>
             </div>
 
-            <div class="mt-4 border rounded-lg">
+            <div class="mt-4 border rounded">
                 <table class="table-fixed min-w-full">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-gray-100 border-b">
                         <tr class="divide-x">
                             <th class="py-2">Магазин</th>
                             <th class="py-2">Дата</th>
@@ -40,9 +43,9 @@ const form = reactive({
                         </tr>
                     </thead>
 
-                    <tbody class="border-t">
+                    <tbody class="divide-y">
                         <tr class="text-center divide-x">
-                            <td class="text-blue-700 underline py-3">
+                            <td class="text-blue-700 hover:underline py-3">
                                 <RouterLink>
                                     amazon
                                 </RouterLink>
@@ -56,7 +59,7 @@ const form = reactive({
                                 201.34 usd
                             </td>
                             
-                            <td class="text-blue-700 underline py-3">
+                            <td class="text-blue-700 hover:underline py-3">
                                 <a href="">
                                     document.pdf
                                 </a>
